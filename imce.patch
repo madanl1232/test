@@ -1,0 +1,20 @@
+diff --git a/inc/imce.page.inc b/inc/imce.page.inc
+index 9972499..bcb00b2 100644
+--- a/inc/imce.page.inc
++++ b/inc/imce.page.inc
+@@ -418,13 +418,8 @@ function imce_delete_filepath($uri) {
+     unset($usage['imce']);
+     // File is in use by an other module.
+     if (!empty($usage)) {
++      foreach($usage['file'] as $module => $info) {
++        foreach($info as $id => $count) {
++          file_field_delete_file($file, NULL, $module, $id, $count);
++        }
++      }
++      //drupal_set_message(t('%filename is in use by another application.', array('%filename' => $file->filename)), 'error');
++      //return FALSE;
+-      drupal_set_message(t('%filename is in use by another application.', array('%filename' => $file->filename)), 'error');
+-      return FALSE;
+     }
+     // Force delete file. Prevent running file_usage_list() second time.
+     if (!file_delete($file, TRUE)) {
